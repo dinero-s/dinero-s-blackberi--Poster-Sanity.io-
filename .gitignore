@@ -1,9 +1,3 @@
-# Игнорировать всё по умолчанию
-*
-
-# Разрешить gitignore самому себя
-!.gitignore
-
 # Разрешить backend и sanity-studio
 !/backend/
 !/sanity-studio/
