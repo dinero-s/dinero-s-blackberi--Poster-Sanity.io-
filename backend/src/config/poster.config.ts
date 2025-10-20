@@ -1,4 +1,5 @@
 export const POSTER_CONFIG = {
-  baseUrl: 'https://api.joinposter.com/api/',
-  token: 'YOUR_POSTER_TOKEN', // временно, потом .env
+  accountId: 'legko2', // Ваш Account ID из настроек Poster
+  token: '338509:0980569047a276608c68df51d461af7e', // Ваш API токен
+  baseUrl: `https://legko2.joinposter.com/api/`, // Будет сформирован автоматически
 };

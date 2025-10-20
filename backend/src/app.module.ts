@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SanityController } from './sanity.controller';
+import { PosterModule } from './modules/poster/poster.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
-  controllers: [SanityController],
+  imports: [PosterModule, PaymentsModule],
 })
 export class AppModule {}

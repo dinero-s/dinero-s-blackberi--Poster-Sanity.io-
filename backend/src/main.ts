@@ -12,10 +12,19 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+
+  SwaggerModule.setup('api', app, document, {
+    swaggerOptions: {
+      docExpansion: 'list', // вкладки открыты
+      persistAuthorization: true,
+      tryItOutEnabled: true, // включает авто-режим Try it out (в новых версиях UI)
+      // если не работает, можно добавить ниже custom JS
+    },
+  });
 
   await app.listen(4000);
   console.log('🚀 Server running on http://localhost:4000');
   console.log('📘 Swagger UI at http://localhost:4000/api');
 }
+
 bootstrap();
