@@ -6,7 +6,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Sanity Test API')
+    .setTitle('BlackBeri Test API')
     .setDescription('Simple test API to fetch data from Sanity.io')
     .setVersion('1.0')
     .build();
@@ -22,9 +22,9 @@ async function bootstrap() {
     },
   });
 
-  await app.listen(4000);
-  console.log('🚀 Server running on http://localhost:4000');
-  console.log('📘 Swagger UI at http://localhost:4000/api');
+  await app.listen(3000);
+  console.log('🚀 Server running on http://localhost:3000');
+  console.log('📘 Swagger UI at http://localhost:3000/api');
 }
 
 bootstrap();

@@ -1,9 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  PaymentEntity,
-  PaymentStatus,
-  PaymentProvider,
-} from './entities/payment.entity';
+import { PaymentEntity, PaymentProvider } from './entities/payment.entity';
 import { v4 as uuid } from 'uuid';
 import { HalykSimulator } from './providers/halyk-simulator.provider';
 import { BccSimulator } from './providers/bcc-simulator.provider';
@@ -11,7 +7,6 @@ import { BccSimulator } from './providers/bcc-simulator.provider';
 @Injectable()
 export class PaymentsService {
   private readonly logger = new Logger(PaymentsService.name);
-  // in-memory store for tests; swap for Redis/Postgres in prod
   private payments = new Map<string, PaymentEntity>();
 
   constructor(
@@ -89,3 +84,14 @@ export class PaymentsService {
     return p;
   }
 }
+
+//Приближенно к реальности
+// if (provider === 'HALYK_QR') {
+//   const { qrUrl, externalRef } = await halykApi.createQr(amount);
+//   return { payment, providerPayload: { qrUrl, externalRef } };
+// }
+//
+// if (provider === 'BCC_NFC') {
+//   const { terminalToken, externalRef } = await bccApi.initSession(amount);
+//   return { payment, providerPayload: { terminalToken, externalRef } };
+// }
