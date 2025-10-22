@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Delete } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PosterService } from './poster.service';
+import { MenuSyncService } from '../menu-sync/menu-sync.service';
 
 @ApiTags('Poster API')
 @Controller('poster')
 export class PosterController {
-  constructor(private readonly posterService: PosterService) {}
+  constructor(
+    private readonly posterService: PosterService,
+    private readonly menuSyncService: MenuSyncService,
+  ) {}
 
   @Get('menu')
   @ApiOperation({ summary: 'Получить список категорий меню из Poster' })
@@ -65,5 +69,33 @@ export class PosterController {
   })
   async getReceipts() {
     return this.posterService.getReceipts();
+  }
+
+  // === Кэшированные endpoints ===
+  @Get('cached/menu')
+  @ApiOperation({ summary: 'Получить кэшированное меню из Redis' })
+  async getCachedMenu() {
+    return this.menuSyncService.getCachedMenu();
+  }
+
+  @Get('cached/products')
+  @ApiOperation({ summary: 'Получить кэшированные товары из Redis' })
+  async getCachedProducts() {
+    const menu = await this.menuSyncService.getCachedMenu();
+    return menu.products;
+  }
+
+  @Get('cached/modifiers')
+  @ApiOperation({ summary: 'Получить кэшированные модификаторы из Redis' })
+  async getCachedModifiers() {
+    const menu = await this.menuSyncService.getCachedMenu();
+    return menu.modifiers;
+  }
+
+  @Get('cached/leftovers')
+  @ApiOperation({ summary: 'Получить кэшированные остатки из Redis' })
+  async getCachedLeftovers() {
+    const menu = await this.menuSyncService.getCachedMenu();
+    return menu.leftovers;
   }
 }

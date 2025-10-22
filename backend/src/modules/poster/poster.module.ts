@@ -1,11 +1,12 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PosterService } from './poster.service';
 import { PosterController } from './poster.controller';
+import { MenuSyncModule } from '../menu-sync/menu-sync.module';
 
 @Module({
   controllers: [PosterController],
-  imports: [ConfigModule],
+  imports: [ConfigModule, forwardRef(() => MenuSyncModule)],
   providers: [
     {
       provide: 'POSTER_CONFIG',
