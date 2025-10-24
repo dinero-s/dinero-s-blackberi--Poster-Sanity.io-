@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { PosterService } from '../poster/poster.service';
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from '../../common/redis/redis.service';
 import { SanityService } from '../sanity/sanity.service';
 
 @Injectable()
-export class MenuSyncService {
-  private readonly logger = new Logger(MenuSyncService.name);
+export class MenuService {
+  private readonly logger = new Logger(MenuService.name);
 
   constructor(
     private readonly posterService: PosterService,

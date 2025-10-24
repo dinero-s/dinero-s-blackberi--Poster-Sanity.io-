@@ -17,16 +17,16 @@ export default defineType({
       to: [{ type: 'banner' }],
     },
     {
-      name: 'categories',
-      title: 'Категории',
+      name: 'categoryOverrides',
+      title: 'Настройки категорий',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'category' }] }],
+      of: [{ type: 'reference', to: [{ type: 'categoryOverride' }] }],
     },
     {
-      name: 'hiddenItems',
-      title: 'Скрытые товары',
+      name: 'productOverrides',
+      title: 'Настройки товаров',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'hiddenItem' }] }],
+      of: [{ type: 'reference', to: [{ type: 'productOverride' }] }],
     },
     {
       name: 'limitSettings',

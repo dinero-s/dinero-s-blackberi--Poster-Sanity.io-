@@ -20,12 +20,12 @@ export class PosterService {
     },
   ) {}
 
-  // === Общий URL для методов публичного API Poster ===
+    // Общий URL для методов публичного API Poster
   private makeUrl(endpoint: string): string {
     return `https://joinposter.com/api/${endpoint}?format=json&token=${this.posterConfig.token}`;
   }
 
-  // === 1. Получить список категорий меню ===
+  // Получить список категорий меню
   async getMenu(): Promise<unknown> {
     const url = this.makeUrl('menu.getCategories');
     try {
@@ -38,7 +38,7 @@ export class PosterService {
     }
   }
 
-  // === 2. Получить список всех товаров ===
+  // Получить список всех товаров
   async getProducts(): Promise<PosterProductsResponseDto> {
     const url = this.makeUrl('menu.getProducts');
     this.logger.debug(`makeUrl('menu.getProducts): ${url}`);
@@ -52,7 +52,7 @@ export class PosterService {
     }
   }
 
-  // === 3. Получить модификаторы (например, сироп, молоко и т.д.) ===
+  // Получить модификаторы (например, сироп, молоко и т.д.)
   async getModifiers(): Promise<
     Array<{ id: number; name: string; price: number }>
   > {
@@ -78,7 +78,7 @@ export class PosterService {
       }));
   }
 
-  // === 4. Получить остатки товаров по складу ===
+  // Получить остатки товаров по складу
   async getProductsLeftovers(): Promise<PosterLeftoversResponseDto> {
     const url = this.makeUrl('storage.getStorageLeftovers');
     try {
@@ -91,7 +91,7 @@ export class PosterService {
     }
   }
 
-  // === 5. Получить список ингредиентов ===
+  // Получить список ингредиентов
   async getIngredients(): Promise<unknown> {
     const url = this.makeUrl('menu.getIngredients');
     try {
@@ -104,7 +104,7 @@ export class PosterService {
     }
   }
 
-  // === 6. Получить список категорий ингредиентов ===
+  // Получить список категорий ингредиентов
   async getCategoriesIngredients(): Promise<unknown> {
     const url = this.makeUrl('menu.getCategoriesIngredients');
     try {
@@ -119,7 +119,7 @@ export class PosterService {
     }
   }
 
-  // === 7. Получить список цехов ===
+  // Получить список цехов
   async getWorkshops(): Promise<unknown> {
     const url = this.makeUrl('menu.getWorkshops');
     try {
@@ -132,7 +132,7 @@ export class PosterService {
     }
   }
 
-  // === Получить чеки / транзакции из Poster ===
+  // Получить чеки / транзакции из Poster
   async getReceipts(): Promise<PosterReceiptsResponseDto> {
     const url = this.makeUrl('transactions.getTransactions');
     this.logger.debug(`makeUrl(transactions.getTransactions): ${url}`);
@@ -184,6 +184,50 @@ export class PosterService {
     } catch (e: unknown) {
       const err = e instanceof Error ? e.message : String(e);
       this.logger.error(`Ошибка при создании заказа Poster: ${err}`);
+      throw e;
+    }
+  }
+
+  // Получить конкретный чек по ID
+  async getReceiptById(receiptId: string): Promise<any> {
+    const url = this.makeUrl(`transactions.getTransaction&transaction_id=${receiptId}`);
+    try {
+      const { data } = await axios.get(url);
+      return data;
+    } catch (e: unknown) {
+      const err = e instanceof Error ? e.message : String(e);
+      this.logger.error(`Ошибка при получении чека ${receiptId}: ${err}`);
+      throw e;
+    }
+  }
+
+  // Получить статус заказа
+  async getOrderStatus(orderId: string): Promise<any> {
+    const url = this.makeUrl(`incomingOrders.getIncomingOrder&incoming_order_id=${orderId}`);
+    try {
+      const { data } = await axios.get(url);
+      return data;
+    } catch (e: unknown) {
+      const err = e instanceof Error ? e.message : String(e);
+      this.logger.error(`Ошибка при получении статуса заказа ${orderId}: ${err}`);
+      throw e;
+    }
+  }
+
+  // Обновить остатки товара
+  async updateStock(productId: string, quantity: number): Promise<any> {
+    const url = this.makeUrl('storage.setStorageLeftovers');
+    const payload = {
+      product_id: productId,
+      count: quantity
+    };
+    
+    try {
+      const { data } = await axios.post(url, payload);
+      return data;
+    } catch (e: unknown) {
+      const err = e instanceof Error ? e.message : String(e);
+      this.logger.error(`Ошибка при обновлении остатков товара ${productId}: ${err}`);
       throw e;
     }
   }

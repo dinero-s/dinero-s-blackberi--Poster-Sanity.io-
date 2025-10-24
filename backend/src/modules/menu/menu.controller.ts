@@ -1,11 +1,11 @@
 import { Controller, Post, Get, HttpCode, Body } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { MenuSyncService } from './menu-sync.service';
+import { MenuService } from './menu.service';
 
-@ApiTags('Menu Sync')
-@Controller('menu-sync')
-export class MenuSyncController {
-  constructor(private readonly menuSyncService: MenuSyncService) {}
+@ApiTags('Меню')
+@Controller('menu')
+export class MenuController {
+  constructor(private readonly menuService: MenuService) {}
 
   @Post('sync')
   @ApiOperation({
@@ -14,7 +14,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Синхронизация завершена успешно' })
   async syncMenu() {
-    await this.menuSyncService.syncMenuToRedis();
+    await this.menuService.syncMenuToRedis();
     return { message: 'Меню синхронизировано успешно' };
   }
 
@@ -25,7 +25,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Кэшированное меню получено' })
   async getCachedMenu() {
-    return await this.menuSyncService.getCachedMenu();
+    return await this.menuService.getCachedMenu();
   }
 
   @Post('webhook/sanity')
@@ -36,7 +36,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Webhook обработан успешно' })
   async sanityWebhook(@Body() body: any) {
-    await this.menuSyncService.handleSanityWebhook(body);
+    await this.menuService.handleSanityWebhook(body);
     return { message: 'Webhook обработан успешно' };
   }
 
@@ -47,7 +47,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Кэш очищен успешно' })
   async clearCache() {
-    await this.menuSyncService.clearMenuCache();
+    await this.menuService.clearMenuCache();
     return { message: 'Кэш меню очищен' };
   }
 
@@ -58,7 +58,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Объединенное меню синхронизировано успешно' })
   async syncUnifiedMenu() {
-    await this.menuSyncService.syncUnifiedMenuToRedis();
+    await this.menuService.syncUnifiedMenuToRedis();
     return { message: 'Объединенное меню синхронизировано успешно' };
   }
 
@@ -69,7 +69,7 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Объединенное меню получено' })
   async getUnifiedMenu() {
-    return await this.menuSyncService.getCachedUnifiedMenu();
+    return await this.menuService.getCachedUnifiedMenu();
   }
 
   @Get('unified/fresh')
@@ -79,6 +79,6 @@ export class MenuSyncController {
   })
   @ApiResponse({ status: 200, description: 'Свежее объединенное меню получено' })
   async getFreshUnifiedMenu() {
-    return await this.menuSyncService.getUnifiedMenu();
+    return await this.menuService.getUnifiedMenu();
   }
 }

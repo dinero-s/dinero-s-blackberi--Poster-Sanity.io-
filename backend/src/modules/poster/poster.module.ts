@@ -1,21 +1,26 @@
-import { Module, forwardRef } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PosterService } from './poster.service';
-import { PosterController } from './poster.controller';
-import { MenuSyncModule } from '../menu-sync/menu-sync.module';
+import { MenuModule } from '../menu/menu.module';
+import posterConfig from '../../config/poster.config';
 
 @Module({
-  controllers: [PosterController],
-  imports: [ConfigModule, forwardRef(() => MenuSyncModule)],
+  controllers: [],
+  imports: [
+    ConfigModule.forFeature(posterConfig),
+    forwardRef(() => MenuModule),
+  ],
   providers: [
     {
       provide: 'POSTER_CONFIG',
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        accountId: configService.get<string>('POSTER_ACCOUNT_ID') ?? '',
-        token: configService.get<string>('POSTER_TOKEN') ?? '',
-        baseUrl: configService.get<string>('POSTER_BASE_URL') ?? '',
-      }),
+      useFactory: (configService: ConfigService) => {
+        return configService.get<{
+          accountId: string;
+          token: string;
+          baseUrl: string;
+        }>('poster')!;
+      },
     },
     PosterService,
   ],

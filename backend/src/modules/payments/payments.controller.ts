@@ -10,7 +10,7 @@ import { PaymentsService } from './payments.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { ProviderCallbackDto } from './dto/callback.dto';
 
-@ApiTags('Payments') // Группа в Swagger
+@ApiTags('Платежи')
 @Controller('payments')
 export class PaymentsController {
   constructor(private readonly paymentsService: PaymentsService) {}

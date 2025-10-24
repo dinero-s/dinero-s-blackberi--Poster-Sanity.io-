@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
 import { PosterModule } from './modules/poster/poster.module';
 import { PaymentsModule } from './modules/payments/payments.module';
-import { MenuSyncModule } from './modules/menu-sync/menu-sync.module';
-import { RedisModule } from './modules/redis/redis.module';
+import { MenuModule } from './modules/menu/menu.module';
+import { RedisModule } from './common/redis/redis.module';
 import { SanityModule } from './modules/sanity/sanity.module';
 import { ConfigModule } from '@nestjs/config';
+import { OrdersModule } from './modules/order/orders.module';
+import { ReceiptsModule } from './modules/receipt/receipts.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { ConfigModule } from '@nestjs/config';
     SanityModule,
     PosterModule,
     PaymentsModule,
-    MenuSyncModule,
+    MenuModule,
+    OrdersModule,
+    ReceiptsModule,
   ],
 })
 export class AppModule {}
